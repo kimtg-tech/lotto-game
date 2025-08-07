@@ -131,7 +131,7 @@ export default function LottoGame() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl">
+    <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl pb-20">
       <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-wider">Lotto 6/45</h1>
       <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px]">
         <Button
