@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: "."
-          target: "/home/ubuntu/tarot-app"
+          target: "/home/ubuntu/lotto-game"
           strip_components: 1
 
       - name: SSH into server and run docker-compose
@@ -28,6 +28,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /home/ubuntu/tarot-app
+            cd /home/ubuntu/lotto-game
             docker compose down
             docker compose up -d --build
