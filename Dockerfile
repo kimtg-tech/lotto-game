@@ -15,11 +15,11 @@ RUN pnpm install
 COPY . .
 
 # 내부에서도 3001 포트 사용
-ENV PORT=3001
+#ENV PORT=3001
 
 # 5. 빌드 명령어 (필요에 따라 조정)
 RUN pnpm run build
 
-EXPOSE 3001
+#EXPOSE 3001
 
-CMD ["pnpm", "start"]
+CMD ["pnpm", "run", "start"]
