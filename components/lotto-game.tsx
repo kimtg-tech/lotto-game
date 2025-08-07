@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FastForward } from 'lucide-react';
+import { TypewriterText } from "./TypewriterText";
 
 // Helper function to generate a random number within a range
 const getRandom = (min: number, max: number) => Math.random() * (max - min) + min;
@@ -15,6 +16,13 @@ const getBallColor = (number: number) => {
   if (number <= 40) return "bg-gray-600";
   return "bg-green-500";
 };
+
+const encouragingMessages = [
+  "✨ 당신은 꼭 1등이 될 거예요!\n행운이 함께합니다 ✨",
+  "💫 이번주 당첨은 당신의 것입니다.\n행복한 미래가 기다려요 💫",
+  "🎯 수고하셨어요!\n이제 로또를 구매하러 가볼까요? 🍀"
+];
+
 
 
 // Ball component (for inside the machine)
@@ -36,6 +44,8 @@ const Ball = ({ number, isTumbling, isDrawn }: { number: number; isTumbling?: bo
       duration: `${getRandom(2, 4)}s`
     });
   }, []);
+
+
 
   const ballClass = `absolute w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-lg transition-opacity duration-500 ${getBallColor(number)}`;
 
@@ -70,6 +80,7 @@ export default function LottoGame() {
   const tumblingSoundRef = useRef<HTMLAudioElement>(null);
   const landSoundRef = useRef<HTMLAudioElement>(null);
   const endSoundRef = useRef<HTMLAudioElement>(null);
+  const [selectedMessage, setSelectedMessage] = useState("");
 
   const allBalls = useMemo(() => Array.from({ length: 45 }, (_, i) => i + 1), []);
   const drawInterval = isFastMode ? 500 : 1000;
@@ -119,6 +130,15 @@ export default function LottoGame() {
     }
   }, [isDrawing, drawnNumbers, shuffledBalls, drawInterval]);
 
+  useEffect(() => {
+    if (drawnNumbers.length === 6) {
+      const randomIndex = Math.floor(Math.random() * encouragingMessages.length);
+      setSelectedMessage(encouragingMessages[randomIndex]);
+    } else {
+      setSelectedMessage("");
+    }
+  }, [drawnNumbers.length]);
+
   const handleDrawClick = () => {
     resetGame();
     setIsDrawing(true);
@@ -131,8 +151,8 @@ export default function LottoGame() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl pb-20">
-      <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-wider">Lotto 6/45</h1>
+    <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl pb-32">
+      <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-wider">🍀행운의 숫자 공장🎲</h1>
       <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px]">
         <Button
           size="icon"
@@ -207,9 +227,18 @@ export default function LottoGame() {
           </div>
         </div>
         {drawnNumbers.length === 6 && (
-             <Button onClick={resetGame}
-                     className="mt-8 px-8 py-4 text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl rounded-xl hover:animate-none"
-             >다시하기</Button>
+            <>
+              <div className="w-full flex justify-center mt-8 mb-4">
+                <TypewriterText text={selectedMessage} />
+              </div>
+              <Button
+                  onClick={resetGame}
+                  className="mt-4 px-8 py-4 text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl rounded-xl hover:animate-none"
+              >
+                다시하기
+              </Button>
+            </>
+
         )}
       </div>
     </div>
