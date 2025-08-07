@@ -1,0 +1,9 @@
+services:
+  web:
+    container_name: lotto-game-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"  # 외부 3001 → 내부 3001
+    restart: unless-stopped
